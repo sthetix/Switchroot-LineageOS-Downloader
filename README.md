@@ -84,7 +84,7 @@ All actions and errors are logged in `lineageos_downloader.log` (created in the 
    - Yes, the application is safe to use. It does not contain any malware or harmful code. The source code is available for review (if provided).
 
 ### 2. **Can I use this on macOS or Linux?**
-   - This EXE is designed for Windows only. You can run the Python script directly for macOS or Linux - see the release page.
+   - This EXE and py script is designed for Windows only. You can attempt to run the Python script directly on macOS or other platform, but it has not been tested.
 
 ### 3. **What if the download fails?**
    - The application automatically retries failed downloads up to 3 times. If the issue continues, please check the logs for more details.
