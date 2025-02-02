@@ -1,6 +1,9 @@
 # Switchroot LineageOS Downloader (Windows EXE)
 
-![Screenshot](https://via.placeholder.com/500x450)  
+<div style="text-align: center;">
+    <img src="https://github.com/sthetix/SLD/blob/main/screen.png" alt="Screenshot" style="width: 450px;"/>
+</div>
+
 *Example screenshot of the application in action.*
 
 **Switchroot LineageOS Downloader** is a lightweight Windows application designed to simplify the process of downloading and organizing LineageOS builds for the Nintendo Switch (Switchroot). Whether you're setting up LineageOS for the tablet or TV variant, this tool automates the download process, verifies file integrity using SHA-256 checksums, and organizes files into the correct folder structure for easy installation.
