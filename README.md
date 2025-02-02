@@ -20,7 +20,7 @@
 - **Resumable Downloads**: Supports resuming interrupted downloads, saving time and bandwidth.
 - **Progress Tracking**: Real-time progress updates with a progress bar and detailed download statistics.
 - **Error Handling**: Retries failed downloads automatically and logs errors for troubleshooting.
-- **Customizable Download Directory**: Allows users to select a custom download folder.
+- **Customizable Download Directory**: Users can select a custom download folder.
 - **Portable**: No installation required; just download the EXE and run it.
 
 ---
@@ -38,8 +38,8 @@ You can download the latest version of the application from the [Releases](https
 3. **Select Variant**: Choose between the **Tablet** or **TV** variant of LineageOS.
 4. **Check Latest Build**: Click the "Check Build" button to fetch the latest build information.
 5. **Select Download Folder**: Choose a directory where the files will be downloaded and organized.
-6. **Start Download**: Click the "Download" button to begin the download process.
-7. **Monitor Progress**: Track the download progress in real-time using the progress bar and logs.
+6. **Start Download**: Click the "Download" button to begin downloading.
+7. **Monitor Progress**: Track the download progress in real time using the progress bar and logs.
 8. **Verify Files**: The application automatically verifies the integrity of downloaded files using SHA-256 checksums.
 
 ---
@@ -84,13 +84,13 @@ All actions and errors are logged in `lineageos_downloader.log` (created in the 
    - Yes, the application is safe to use. It does not contain any malware or harmful code. The source code is available for review (if provided).
 
 ### 2. **Can I use this on macOS or Linux?**
-   - This EXE is designed for Windows only. For macOS or Linux, you can run the Python script directly if the source code is available.
+   - This EXE is designed for Windows only. You can run the Python script directly if the source code is available for macOS or Linux.
 
 ### 3. **What if the download fails?**
-   - The application automatically retries failed downloads up to 3 times. If the issue persists, check the logs for more details.
+   - The application automatically retries failed downloads up to 3 times. If the issue continues, please check the logs for more details.
 
 ### 4. **Can I change the download folder?**
-   - Yes, you can select a custom download folder using the "Select Folder" button.
+   - You can select a custom download folder using the "Select Folder" button.
 
 ### 5. **How do I verify the checksum of downloaded files?**
    - The application automatically verifies the SHA-256 checksum of each file. If the checksum does not match, the file will be re-downloaded.
@@ -106,14 +106,14 @@ If you encounter any issues or have suggestions for improvement, please open an 
 
 ## License
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License**. Please take a look at the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## Why Use This Tool?
 
-- **Saves Time**: Automates the download and organization process, so you don’t have to manually create folders or verify files.
-- **User-Friendly**: Designed with a simple and intuitive interface for both beginners and advanced users.
+- **Saves Time**: Automates the download and organization process, so you don’t have to create folders or verify files manually.
+- **User-Friendly**: Designed with a simple and intuitive interface for beginners and advanced users.
 - **Reliable**: Ensures file integrity with checksum verification and retries failed downloads automatically.
 
 ---
