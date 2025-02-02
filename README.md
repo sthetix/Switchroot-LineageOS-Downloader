@@ -45,6 +45,9 @@ You can download the latest version of the application from the [Releases](https
 
 After downloading, the files are organized into the following structure:
 
+# LineageOS Repository Structure
+```
+
 LineageOS-{version}-{date}-{variant}/
 ├── switchroot/
 │ ├── install/
@@ -61,6 +64,7 @@ LineageOS-{version}-{date}-{variant}/
 │ └── ini/
 │ └── android.ini
 └── lineage-{version}-{date}-nightly-nx_tab-signed.zip
+```
 
 
 ---
@@ -92,7 +96,7 @@ All actions and errors are logged in `lineageos_downloader.log` (created in the 
 
 ## Support
 
-If you encounter any issues or have suggestions for improvement, please open an [issue](https://github.com/your-username/switchroot-lineageos-downloader/issues) on GitHub.
+If you encounter any issues or have suggestions for improvement, please open an [issue]([https://github.com/your-username/switchroot-lineageos-downloader/issues](https://github.com/sthetix/SLD/issues)) on GitHub.
 
 ---
 
