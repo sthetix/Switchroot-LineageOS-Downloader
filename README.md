@@ -1,8 +1,8 @@
 # Switchroot LineageOS Downloader (Windows EXE)
 
-<div style="text-align: center;">
-    <img src="https://github.com/sthetix/SLD/blob/main/screen.png" alt="Screenshot" style="width: 450px;"/>
-</div>
+<p align="center" width="100%">
+    <img width="450px" src="https://github.com/sthetix/SLD/blob/main/screen.png" alt="Screenshot">
+</p>
 
 *Example screenshot of the application in action.*
 
@@ -115,16 +115,6 @@ This project is licensed under the **MIT License**. Please take a look at the [L
 - **Saves Time**: Automates the download and organization process, so you don’t have to create folders or verify files manually.
 - **User-Friendly**: Designed with a simple and intuitive interface for beginners and advanced users.
 - **Reliable**: Ensures file integrity with checksum verification and retries failed downloads automatically.
-
----
-
-## Screenshots
-
-![Screenshot 1](https://via.placeholder.com/500x450)  
-*Main interface of the application.*
-
-![Screenshot 2](https://via.placeholder.com/500x450)  
-*Progress tracking during a download.*
 
 ---
 
