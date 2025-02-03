@@ -1,4 +1,4 @@
-# Switchroot LineageOS Downloader (Windows EXE)
+# Switchroot LineageOS Downloader
 
 <p align="center" width="100%">
     <img width="450px" src="https://github.com/sthetix/SLD/blob/main/screen.png" alt="Screenshot">
