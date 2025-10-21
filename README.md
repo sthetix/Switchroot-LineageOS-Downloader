@@ -1,7 +1,7 @@
 # Switchroot LineageOS Downloader
 
 <p align="center" width="100%">
-    <img width="450px" src="https://github.com/sthetix/SLD/blob/main/screen.png" alt="Screenshot">
+    <img width="450px" src="images/preview.png" alt="Switchroot LineageOS Downloader preview">
 </p>
 
 *Example screenshot of the application in action.*
@@ -126,3 +126,7 @@ This project is licensed under the **MIT License**. Please take a look at the [L
 ---
 
 Enjoy using the **Switchroot LineageOS Downloader**! If you find this tool helpful, consider giving it a ⭐ on GitHub.
+
+<a href="https://www.buymeacoffee.com/sthetixofficial" target="_blank">
+  <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+</a>
