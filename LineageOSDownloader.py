@@ -19,7 +19,7 @@ class LineageOSDownloader:
         self.style = ttk.Style()
 
         # Define the app version
-        self.app_version = "v1.0.2"  # Updated version
+        self.app_version = "v1.0.3"  # Updated version
 
         # Configure dark theme
         self.style.theme_use('clam')
@@ -61,6 +61,9 @@ class LineageOSDownloader:
         self.gapps_url = None  # Store GApps URL
         self.gapps_filename = None  # Store GApps filename
         self.gapps_checksums = {}  # Store checksums for verification
+        self.session = requests.Session()
+        self.connect_timeout = 10
+        self.read_timeout = 60
 
         # Configure logging
         logging.basicConfig(
@@ -190,7 +193,7 @@ class LineageOSDownloader:
         url = f"https://download.lineageos.org/api/v2/devices/{device}/builds"
         try:
             self.log_message(f"Fetching latest build from: {url}")
-            response = requests.get(url, timeout=10)
+            response = self.session.get(url, timeout=(self.connect_timeout, self.read_timeout))
             response.raise_for_status()
             builds = response.json()
             if not builds:
@@ -221,7 +224,11 @@ class LineageOSDownloader:
         try:
             self.log_message(f"Fetching MindTheGapps from: {github_api}")
             headers = {'Accept': 'application/vnd.github.v3+json'}
-            response = requests.get(github_api, headers=headers, timeout=10)
+            response = self.session.get(
+                github_api,
+                headers=headers,
+                timeout=(self.connect_timeout, self.read_timeout)
+            )
             response.raise_for_status()
             gapps_json = response.json()
             gapps_url = None
@@ -248,7 +255,12 @@ class LineageOSDownloader:
             version = self.latest_build['version']
             date = self.latest_build['date'].replace("-", "")
             self.build_label.config(text=f"{version}-{date}")
-            self.download_urls = [file['url'] for file in self.latest_build['files'] if 'super_empty.img' not in file['url']]
+            self.download_urls = [
+                file['url']
+                for file in self.latest_build['files']
+                if 'super_empty.img' not in file['url']
+            ]
+            self.download_urls.extend(self.permanent_links)
             # Store checksums for verification
             for file in self.latest_build['files']:
                 if 'super_empty.img' not in file['url']:
@@ -328,7 +340,12 @@ r2p_action=self
                     if self.cancel_download:
                         break
             if not self.cancel_download:
-                self.log_message("Download complete! Files are organized in the target folder.")
+                if self.failed_downloads:
+                    failed_files = ", ".join(os.path.basename(url) for url in self.failed_downloads)
+                    self.log_message(f"Download finished with failures: {failed_files}")
+                    self.log_message("Use Retry Failed or try another network/VPN if the same mirror keeps timing out.")
+                else:
+                    self.log_message("Download complete! Files are organized in the target folder.")
         except Exception as e:
             self.log_message(f"Download failed: {str(e)}")
             messagebox.showerror("Error", str(e))
@@ -381,16 +398,33 @@ r2p_action=self
                 downloaded_size = 0
                 if os.path.exists(temp_file_path):
                     downloaded_size = os.path.getsize(temp_file_path)
-                    if expected_checksum:
-                        partial_checksum = self.calculate_checksum(temp_file_path)
-                        if not expected_checksum.startswith(partial_checksum):
-                            self.log_message(f"Corrupted temp file detected: {filename}")
-                            os.remove(temp_file_path)
-                            downloaded_size = 0
+                    self.log_message(f"Resuming partial download: {filename} from {self.format_size(downloaded_size)}")
 
                 headers = {"Range": f"bytes={downloaded_size}-"} if downloaded_size else {}
-                response = requests.get(url, headers=headers, stream=True, timeout=10)
+                response = self.session.get(
+                    url,
+                    headers=headers,
+                    stream=True,
+                    timeout=(self.connect_timeout, self.read_timeout),
+                    allow_redirects=True
+                )
                 response.raise_for_status()
+                if attempt == 1:
+                    self.log_download_source(url, response, downloaded_size)
+
+                if downloaded_size and response.status_code == 200:
+                    self.log_message(f"Server did not resume {filename}; restarting from the beginning")
+                    downloaded_size = 0
+                    headers = {}
+                    response.close()
+                    response = self.session.get(
+                        url,
+                        headers=headers,
+                        stream=True,
+                        timeout=(self.connect_timeout, self.read_timeout),
+                        allow_redirects=True
+                    )
+                    response.raise_for_status()
 
                 total_size = int(response.headers.get('Content-Length', 0)) + downloaded_size
                 with open(temp_file_path, 'ab' if downloaded_size else 'wb') as f:
@@ -420,6 +454,16 @@ r2p_action=self
                 if attempt == self.retry_attempts:
                     self.failed_downloads.append(url)
                     self.log_message(f"Permanent failure for {filename}")
+
+    def log_download_source(self, original_url, response, downloaded_size):
+        final_url = response.url
+        total_size = int(response.headers.get('Content-Length', 0)) + downloaded_size
+        accept_ranges = response.headers.get('Accept-Ranges', 'not reported')
+        if final_url != original_url:
+            self.log_message(f"Mirror: {final_url}")
+        self.log_message(
+            f"Download info: size={self.format_size(total_size)}, resume={accept_ranges}, timeout={self.read_timeout}s"
+        )
 
     def calculate_checksum(self, file_path):
         sha256_hash = hashlib.sha256()
@@ -467,13 +511,19 @@ r2p_action=self
         self.cancel_btn.config(state=tk.DISABLED)
         if self.cancel_download:
             self.progress_label.config(text="Download Canceled", foreground='#ff4444')
+        elif self.failed_downloads:
+            self.progress_label.config(
+                text=f"Download finished with failures. {self.total_downloaded} of {self.total_files} files downloaded.",
+                foreground='#ff4444'
+            )
         else:
             self.progress_label.config(text=f"Download Complete! {self.total_downloaded} of {self.total_files} files downloaded.", foreground='#00cc66')
         self.progress_bar["value"] = 0
-        self.master.after(2000, lambda: self.progress_label.config(
-            text="Ready", 
-            foreground='#888888'
-        ))
+        if not self.cancel_download and not self.failed_downloads:
+            self.master.after(2000, lambda: self.progress_label.config(
+                text="Ready",
+                foreground='#888888'
+            ))
         if self.failed_downloads:
             self.retry_btn.config(state=tk.NORMAL)
 
